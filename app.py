@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import joblib
+from fastapi.responses import HTMLResponse, FileResponse
 
 
 # Define a comprehensive text preprocessing function
@@ -41,6 +42,11 @@ app = FastAPI()
 # Define request body model
 class TextRequest(BaseModel):
     text: str
+
+
+@app.get("/")
+async def server_html():
+    return FileResponse("index.html")
 
 
 # Define endpoint
