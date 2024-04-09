@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Classification Form</title>
+    <link href="https://db.onlinewebfonts.com/c/9b06ae83a4412168ed194a8ed31218c2?family=Mabry+Pro" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        font-family: "Mabry Pro";
+    }
+</style>
+
+<body>
+    <h1>Text Classification</h1>
+    <form id="textClassificationForm">
+        <label for="textInput">Enter Text:</label><br>
+        <textarea id="textInput" name="text" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Classify">
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('textClassificationForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/logisticClassifier', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('result').innerText = `Prediction: ${data.prediction}`;
+        });
+    </script>
+</body>
+
+</html>
