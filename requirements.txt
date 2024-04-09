@@ -3,3 +3,5 @@ pydantic
 scikit-learn
 nltk
 joblib
+uvicorn
+gunicorn

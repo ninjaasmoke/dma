@@ -8,6 +8,9 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import joblib
 from fastapi.responses import HTMLResponse, FileResponse
+import uvicorn
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 
 # Define a comprehensive text preprocessing function
@@ -37,6 +40,7 @@ vectorizer = TfidfVectorizer()
 
 # Initialize FastAPI app
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # Define request body model
@@ -44,9 +48,10 @@ class TextRequest(BaseModel):
     text: str
 
 
-@app.get("/")
-async def server_html():
-    return FileResponse("index.html")
+@app.get("/", response_class=HTMLResponse)
+async def index():
+    print("Index page")
+    return FileResponse("static/index.html")
 
 
 # Define endpoint
@@ -61,3 +66,7 @@ async def classify_text(request: TextRequest):
     # Map prediction to class label
     class_label = "AI-generated" if prediction[0] == 1 else "Human-written"
     return {"prediction": class_label}
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8080)
