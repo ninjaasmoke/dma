@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Classification Form</title>
+    <!-- Link to the Mabry Pro font -->
     <link href="https://db.onlinewebfonts.com/c/9b06ae83a4412168ed194a8ed31218c2?family=Mabry+Pro" rel="stylesheet">
+    <style>
+        /* Apply the Mabry Pro font to all elements */
+        * {
+            font-family: "Mabry Pro";
+        }
+    </style>
 </head>
-
-<style>
-    * {
-        font-family: "Mabry Pro";
-    }
-</style>
 
 <body>
     <h1>Text Classification</h1>
@@ -27,14 +28,24 @@
     <script>
         document.getElementById('textClassificationForm').addEventListener('submit', async function (event) {
             event.preventDefault();
-            const formData = new FormData(this);
+
+            // Get the text input value
+            const text = document.getElementById('textInput').value;
+            const requestBody = {
+                text: text
+            };
+
             const response = await fetch('/logisticClassifier', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
             });
             const data = await response.json();
             document.getElementById('result').innerText = `Prediction: ${data.prediction}`;
         });
+
     </script>
 </body>
 

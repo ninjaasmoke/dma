@@ -12,6 +12,11 @@ import uvicorn
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
+import nltk
+nltk.download("stopwords")
+nltk.download("punkt")
+nltk.download("wordnet")
+
 
 # Define a comprehensive text preprocessing function
 def preprocess_text(text):
@@ -57,6 +62,8 @@ async def index():
 # Define endpoint
 @app.post("/logisticClassifier")
 async def classify_text(request: TextRequest):
+    print("Classifying text...")
+    print(request.text)
     # Preprocess text
     preprocessed_text = preprocess_text(request.text)
     # Vectorize text
@@ -69,4 +76,4 @@ async def classify_text(request: TextRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+    uvicorn.run("main:app", host="127.0.0.1", port=8000)
