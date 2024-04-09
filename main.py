@@ -41,7 +41,7 @@ def preprocess_text(text):
 model = joblib.load("logistic_regression_model.joblib")
 
 # Vectorize text using TF-IDF
-vectorizer = TfidfVectorizer()
+vectorizer = joblib.load('tfidf_vectorizer.joblib')
 
 # Initialize FastAPI app
 app = FastAPI()
