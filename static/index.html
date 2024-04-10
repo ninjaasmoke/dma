@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Classification Form</title>
+    <title>Ai | Human</title>
     <!-- Link to the Mabry Pro font -->
     <link href="https://db.onlinewebfonts.com/c/9b06ae83a4412168ed194a8ed31218c2?family=Mabry+Pro+Medium"
         rel="stylesheet">
     <style>
-        /* Apply the Mabry Pro font to all elements */
         * {
             font-family: "Mabry Pro Medium", sans-serif;
             box-sizing: border-box;
@@ -17,13 +16,15 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            padding: 20px;
             background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+
+            max-width: 600px;
+            margin: auto;
         }
 
         h1 {
@@ -32,7 +33,7 @@
         }
 
         form {
-            width: 600px;
+            width: 100%;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
@@ -46,7 +47,7 @@
 
         textarea {
             width: 100%;
-            resize: vertical;
+            resize: none;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
@@ -69,7 +70,7 @@
         }
 
         #result {
-            width: 600px;
+            width: 100%;
             padding: 20px;
             border-radius: 5px;
             background-color: #fff;
@@ -80,11 +81,11 @@
 </head>
 
 <body>
-    <h1>Text Classification</h1>
+    <h1>Ai | Human</h1>
     <form id="textClassificationForm">
         <label for="textInput">Enter Text:</label><br>
-        <textarea id="textInput" name="text" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Classify">
+        <textarea id="textInput" name="text" rows="20"></textarea><br><br>
+        <input type="submit" value="Classify" id="submitButton">
     </form>
 
     <div id="result"></div>
@@ -94,10 +95,19 @@
             event.preventDefault();
 
             // Get the text input value
-            const text = document.getElementById('textInput').value;
+            const textInput = document.getElementById('textInput');
             const requestBody = {
-                text: text
+                text: textInput.value
             };
+            textInput.disabled = true;
+
+            // disable the form and add loading
+
+            const submitButton = document.getElementById('submitButton');
+            submitButton.value = 'Loading...';
+            submitButton.disabled = true;
+            submitButton.style.backgroundColor = '#ccc';
+
 
             const response = await fetch('/logisticClassifier', {
                 method: 'POST',
@@ -108,6 +118,12 @@
             });
             const data = await response.json();
             document.getElementById('result').innerText = `Prediction: ${data.prediction}`;
+
+            // enable the form and remove loading
+            submitButton.value = 'Classify';
+            submitButton.disabled = false;
+            submitButton.style.backgroundColor = '#007bff';
+            textInput.disabled = false;
         });
 
     </script>
