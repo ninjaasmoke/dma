@@ -23,13 +23,30 @@
             align-items: center;
             flex-direction: column;
 
-            max-width: 600px;
+            max-width: 1000px;
             margin: auto;
+
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 20px;
+            align-items: start;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                gap: 0;
+            }
         }
 
         h1 {
             text-align: center;
             color: #333;
+        }
+
+        h4 {
+            margin: 10px 0;
         }
 
         form {
@@ -81,18 +98,38 @@
 </head>
 
 <body>
-    <h1>Ai | Human</h1>
+    <div style="width: 100%;">
+        <form id="modelSelection">
+            <h4>Choose classifier</h4>
+            <input type="radio" id="logistic_tfidf" name="model" value="/logisticClassifier" checked>
+            <label for="logistic_tfidf">Logistic Regression | TFIDF</label><br>
+
+            <input type="radio" id="logistic_ngrams" name="model" value="/logisticClassifierNgrams">
+            <label for="logistic_ngrams">Logistic Regression | N-Grams</label><br>
+
+            <input type="radio" id="naivebayes_tfidf" name="model" value="/naiveBayesClassifier">
+            <label for="naivebayes_tfidf">Naive Bayes | TFIDF</label><br>
+
+            <input type="radio" id="naivebayes_ngrams" name="model" value="/naiveBayesClassifierNgrams">
+            <label for="naivebayes_ngrams">Naive Bayes | N-Grams</label><br>
+        </form>
+        <div id="result"></div>
+    </div>
     <form id="textClassificationForm">
-        <label for="textInput">Enter Text:</label><br>
+        <h4>Enter Text:</h4>
         <textarea id="textInput" name="text" rows="20"></textarea><br><br>
         <input type="submit" value="Classify" id="submitButton">
     </form>
 
-    <div id="result"></div>
 
     <script>
         document.getElementById('textClassificationForm').addEventListener('submit', async function (event) {
             event.preventDefault();
+
+            const modelSelection = document.getElementById('modelSelection');
+            const selectedModel = modelSelection.querySelector('input[name="model"]:checked').value;
+
+            console.log(selectedModel);
 
             // Get the text input value
             const textInput = document.getElementById('textInput');
@@ -109,7 +146,7 @@
             submitButton.style.backgroundColor = '#ccc';
 
 
-            const response = await fetch('/logisticClassifier', {
+            const response = await fetch(selectedModel ?? '/logisticClassifier', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
