@@ -53,15 +53,15 @@ def preprocess_text(text):
 
 # Load the model
 log_model_tfidf = joblib.load("logistic_regression_model.joblib")
-log_model_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/logistic_regression_model_ngrams.joblib")
+# log_model_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/logistic_regression_model_ngrams.joblib")
 
 nb_model_tfidf = joblib.load("naive_bayes_model_tfidf.joblib")
-nb_model_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/naive_bayes_model_ngrams.joblib")
+# nb_model_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/naive_bayes_model_ngrams.joblib")
 
 
 # Vectorize text using TF-IDF
 vectorizer_tfidf = joblib.load('tfidf_vectorizer.joblib')
-vectorizer_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/vectorizer_ngram.joblib")
+# vectorizer_ngrams = load_from_url("https://github.com/ninjaasmoke/data-mining/releases/download/some-tag/vectorizer_ngram.joblib")
 
 
 # Initialize FastAPI app
