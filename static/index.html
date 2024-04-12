@@ -65,7 +65,7 @@
         input[type="submit"] {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #ccc;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -106,6 +106,15 @@
                 width: 100%;
             }
         }
+
+        .submit-button:hover:not([disabled]) {
+            background-color: #0056b3;
+        }
+
+        /* Disable cursor change on hover for disabled buttons */
+        .submit-button[disabled]:hover {
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -128,13 +137,46 @@
         <div id="result"></div>
     </div>
     <form id="textClassificationForm">
-        <h4>Enter Text:</h4>
+        <h4>Enter Text</h4>
+        <p style="font-size: 11px; font-style: italic; font-family: 'Courier New', Courier, monospace; margin-top: 0;">(min 1000, max 2000)</p>
+        <p style="font-size: 11px; margin-bottom: 2px;" id="wordCount">Word count: </p>
         <textarea id="textInput" name="text" rows="20"></textarea><br><br>
-        <input type="submit" value="Classify" id="submitButton">
+        <input type="submit" value="Classify" id="submitButton" disabled>
     </form>
 
 
     <script>
+        // Function to count words in the text
+        function countWords(text) {
+            return text.trim().split(/\s+/).length;
+        }
+
+        // Function to enable/disable submit button based on word count
+        function updateSubmitButton(text) {
+            const submitButton = document.getElementById('submitButton');
+            const wordCount = countWords(text);
+            if (wordCount <= 1000 || wordCount >= 2000) {
+                submitButton.disabled = true;
+                submitButton.style.backgroundColor = '#ccc';
+                submitButton.style.cursor = 'not-allowed';
+            } else {
+                submitButton.disabled = false;
+                submitButton.style.backgroundColor = '#007bff';
+                submitButton.style.cursor = 'pointer';
+            }
+        }
+
+        document.getElementById('textInput').addEventListener('input', function (event) {
+            const text = event.target.value;
+            const wordCount = countWords(text);
+            const wordCountElement = document.getElementById('wordCount');
+
+            // Update the word count
+            wordCountElement.innerText = `Word count: ${wordCount}`;
+
+            updateSubmitButton(text);
+        });
+
         document.getElementById('textClassificationForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
@@ -176,6 +218,7 @@
         });
 
     </script>
+
 </body>
 
 </html>
